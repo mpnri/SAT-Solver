@@ -1,4 +1,5 @@
 import promptSync from "prompt-sync";
+import { SAT_Solver } from "./solver";
 
 const prompt = promptSync();
 
@@ -13,3 +14,6 @@ for (let i = 0; i < formulasCount; i++) {
   formulas.push(input.split(" ").map(Number));
 }
 console.log(formulas);
+
+
+// SAT_Solver(formulas);
