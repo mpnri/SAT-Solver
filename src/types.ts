@@ -1,4 +1,4 @@
-export type Formula = Number[];
+export type Formula = number[];
 
 //todo: use classes or namespaces?
 export type Node = VariableNode | AndNode | NotNode;
@@ -10,13 +10,13 @@ export interface VariableNode {
 
 export interface AndNode {
   type: "and";
-  left: Node;
-  right: Node;
+  left?: Node;
+  right?: Node;
 }
 
 export interface NotNode {
   type: "not";
-  child: Node;
+  child?: Node;
 }
 
 export type SATSolverType = "brute_force" | "linear" | "cubic";
