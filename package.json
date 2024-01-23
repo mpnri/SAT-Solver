@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "test": "vitest"
   },
   "devDependencies": {
     "ts-node": "10.9.2",
@@ -18,7 +19,8 @@
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "vitest": "^1.2.1"
   },
   "dependencies": {
     "prompt-sync": "^4.2.0"
