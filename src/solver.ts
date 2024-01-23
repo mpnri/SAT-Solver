@@ -13,7 +13,33 @@ export const SAT_Solver = (
   return "unsatisfiable";
 };
 
-
+function SATLeanerSolver(rootNode: Node): Formula | "unsatisfiable" | "solver_failed" {
+  const valFunc = new Map<number, boolean>();
+  //* bfs queue { node and it's expected value }
+  const queue: { node: Node; value: boolean }[] = [{ node: rootNode, value: true }];
+  while (queue.length > 0) {
+    const { node, value } = queue.shift();
+    if (node.type === "variable") {
+      if (valFunc.get(node.var) && valFunc.get(node.var) !== value) {
+        return "unsatisfiable";
+      }
+      valFunc.set(node.var, value);
+    } else if (node.type === "not") {
+      if (!node.child) throw Error("empty child for 'not' node");
+      queue.push({ node: node.child, value: !value });
+    } else if (node.type === "and") {
+      if (value === false) {
+        //* leaner solver can not handle this case
+        return "solver_failed";
+      }
+      if (!node.left || !node.right) throw Error("empty child for 'and' node");
+      queue.push({ node: node.left, value: true }, { node: node.right, value: true });
+    }
+  }
+  return Array.from(valFunc.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([variable, value]) => variable * (value ? +1 : -1));
+}
 
 /**
  ** use the described Transform function(T(φ))
@@ -28,7 +54,10 @@ function transformFormula(formula: Formula): Formula {
 function parseFormulaToTree(formula: Formula): Node {
   if (!formula.length) throw Error("empty formula");
   if (formula.length === 1) {
-    const root: VariableNode = { type: "variable", var: formula[0] };
+    const root: Node =
+      formula[0] > 0
+        ? { type: "variable", var: formula[0] }
+        : { type: "not", child: { type: "variable", var: Math.abs(formula[0]) } };
     return root;
   }
 
@@ -66,18 +95,16 @@ function parseFormulasToTree(formulas: Formula[]): Node {
     const rootOfTheFormula = parseFormulaToTree(formula);
     if (index < formulas.length - 1) {
       currentNode.left = rootOfTheFormula;
-      currentNode.right = { type: "and" };
-      currentNode = currentNode.right;
+      if (index < formulas.length - 2) {
+        currentNode.right = { type: "and" };
+        currentNode = currentNode.right;
+      }
     } else {
       currentNode.right = rootOfTheFormula;
     }
   });
 
   return root;
-}
-
-function SATLeanerSolver(rootNode: Node): Formula | "unsatisfiable" | "solver_failed" {
-  return "solver_failed";
 }
 
 /**

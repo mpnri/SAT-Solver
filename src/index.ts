@@ -13,7 +13,12 @@ for (let i = 0; i < formulasCount; i++) {
   input = prompt();
   formulas.push(input.split(" ").map(Number));
 }
-console.log(formulas);
+// console.log(formulas);
 
+const answer = SAT_Solver(formulas, "linear");
 
-SAT_Solver(formulas, "brute_force");
+console.log(
+  typeof answer === "string"
+    ? answer
+    : answer.map((v, i) => [String.fromCharCode(97 + i), v > 0 ? true : false]),
+);
