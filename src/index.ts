@@ -15,7 +15,7 @@ for (let i = 0; i < formulasCount; i++) {
 }
 // console.log(formulas);
 
-const answer = SAT_Solver(formulas, "cubic");
+const answer = SAT_Solver(formulas, variablesCount, "brute_force");
 
 console.log(
   typeof answer === "string"

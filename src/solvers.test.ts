@@ -3,21 +3,28 @@ import { SAT_Solver } from "./solver";
 
 describe("linear solver", () => {
   it("should find answer", () => {
-    const answer = SAT_Solver([[1], [-2], [-3]], "linear");
-    expect(answer).toBeTypeOf("object");
-    if (typeof answer === "string") return;
+    const result = SAT_Solver([[1], [-2], [-3]], 3, "linear");
+    expect(result).toBeTypeOf("object");
+    if (typeof result === "string") return;
 
-    expect(is_same(answer, [1, -2, -3])).toBe(true);
+    expect(is_same(result, [1, -2, -3])).toBe(true);
   });
 
   it("should say unsatisfiable", () => {
-    const answer = SAT_Solver([[1], [-1]], "linear");
-    expect(answer).toBe<ReturnType<typeof SAT_Solver>>("unsatisfiable");
+    const result = SAT_Solver([[1], [-1]], 1, "linear");
+    expect(result).toBe<ReturnType<typeof SAT_Solver>>("unsatisfiable");
   });
 
   it("could not solve this", () => {
-    const answer = SAT_Solver([[1], [-1, 2]], "linear");
-    expect(answer).toBe<ReturnType<typeof SAT_Solver>>("solver_failed");
+    const result = SAT_Solver([[1], [-1, 2]], 2, "linear");
+    expect(result).toBe<ReturnType<typeof SAT_Solver>>("solver_failed");
+  });
+});
+
+describe("cubic solver", () => {
+  it(`p^(~q)^(~r) should be ${[[1, -2, -3]]}`, () => {
+    const result = SAT_Solver([[1], [-2], [-3]], 3, "cubic");
+    expect(result).toEqual<typeof result>([1, -2, -3]);
   });
 });
 
