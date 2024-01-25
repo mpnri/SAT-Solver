@@ -1,10 +1,16 @@
 import promptSync from "prompt-sync";
 import { SAT_Solver } from "./solvers";
-import { Formula } from "./types";
+import { Formula, SATSolverType } from "./types";
 
 const prompt = promptSync();
 
-let input: string = prompt("Enter your CNF formula in DIMACS format: ");
+console.log("Enter SAT Solver mode(defaults cubic):\n1)linear\n2)cubic\n3)brute force: ");
+const mode: string = prompt();
+const solverMode: SATSolverType = mode === "1" ? "linear" : mode === "3" ? "brute_force" : "cubic";
+console.log(`${solverMode} selected`);
+
+console.log("Enter your CNF formula in DIMACS format: ");
+let input: string = prompt();
 
 const [_, __, variablesCount, formulasCount] = input.split(" ").map(Number);
 
@@ -16,7 +22,7 @@ for (let i = 0; i < formulasCount; i++) {
 }
 // console.log(formulas);
 
-const answer = SAT_Solver(formulas, variablesCount, "brute_force");
+const answer = SAT_Solver(formulas, variablesCount, solverMode);
 
 console.log(
   typeof answer === "string"
