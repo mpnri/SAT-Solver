@@ -1,5 +1,41 @@
 import { describe, expect, it } from "vitest";
 import { SAT_Solver } from "./solver";
+import { SAT_Solver_Validator } from "./test.utils";
+
+describe("check brute_force SAT solver", () => {
+  it("should find answer", () => {
+    const formulas = [[1], [-2], [-3]];
+    const result = SAT_Solver(formulas, 3, "brute_force");
+    expect(result).not.toBeTypeOf("string");
+    if (typeof result === "string") return;
+    expect(SAT_Solver_Validator(formulas, result)).toBe(true);
+  });
+
+  it("should find answer", () => {
+    const formulas = [
+      [1, 2, 3],
+      [1, -2],
+      [2, -3],
+      [3, -1],
+    ];
+    const result = SAT_Solver(formulas, 3, "brute_force");
+    expect(result).not.toBeTypeOf("string");
+    if (typeof result === "string") return;
+    expect(SAT_Solver_Validator(formulas, result)).toBe(true);
+  });
+
+  it("should response unsatisfiable", () => {
+    const formulas = [
+      [1, 2, 3],
+      [1, -2],
+      [2, -3],
+      [3, -1],
+      [-1, -2, -3],
+    ];
+    const result = SAT_Solver(formulas, 3, "brute_force");
+    expect(result).toBe<typeof result>("unsatisfiable");
+  });
+});
 
 describe("linear solver", () => {
   it("should find answer", () => {

@@ -16,7 +16,7 @@ export const SAT_Solver = (
   }
 
   if (solverType === "brute_force") {
-    return SATBruteForceSolver(formulas,variablesCount)
+    return SATBruteForceSolver(formulas, variablesCount);
   }
 
   return "unsatisfiable";
@@ -129,7 +129,10 @@ function SATBruteForceSolver(
 ): Formula | "unsatisfiable" {
   for (let mask = 0; mask < 1 << variablesCount; mask++) {
     const valueFunc = new Map<number, boolean>();
-    for (let i = 0; i < variablesCount; i++) valueFunc.set(i + 1, Boolean(mask ^ (1 << i)));
+
+    for (let i = 0; i < variablesCount; i++) {
+      valueFunc.set(i + 1, Boolean(mask & (1 << i)));
+    }
     if (BruteForceSolver(formulas, valueFunc)) {
       return Array.from(valueFunc.entries())
         .sort((a, b) => a[0] - b[0])
