@@ -16,3 +16,27 @@ export function SAT_Solver_Validator(formulas: Formula[], answer: Formula): bool
   }
   return true;
 }
+
+export function randomFormulasGenerator(
+  formulasCount: number,
+  variablesCount: number,
+  formulaLengthRage: [number, number] = [1, 3],
+): Formula[] {
+  const formulas = [];
+  const range = Math.min(Math.max(Math.abs(formulaLengthRage[1] - formulaLengthRage[0]), 1), 30);
+  const leastLength = Math.min(formulaLengthRage[0], 1);
+  while (formulasCount--) {
+    const formulaLength = Math.floor(getRandomNumber() * range) + leastLength;
+    formulas.push(
+      Array.from(
+        { length: formulaLength },
+        () => Math.ceil(getRandomNumber() * variablesCount) * (getRandomNumber() >= 0.5 ? 1 : -1),
+      ),
+    );
+  }
+  return formulas;
+}
+
+function getRandomNumber() {
+  return Math.random() * Math.random();
+}
