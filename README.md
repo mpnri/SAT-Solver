@@ -32,6 +32,7 @@ p cnf 5 5
 -5 3
 ```
 For more details -> [click me:)!](https://github.com/crillab/gophersat/blob/master/examples/sat-for-noobs.md?plain=1#dimacs-format)
+
 ![image](https://github.com/mpnri/SAT-Solver/assets/47795908/a07669e9-f07d-48ec-92f0-659979395077)
 
 ### Run Automated Tests
