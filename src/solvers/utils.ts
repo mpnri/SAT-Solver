@@ -95,3 +95,17 @@ export function printTree(node?: Node, depth = 0) {
     }
   }
 }
+
+export function convertFormulasToString(formulas: Formula[]) {
+  return formulas
+    .map((formula) => {
+      return (
+        "[" +
+        formula
+          .map((term) => (term < 0 ? "~" : "") + String.fromCharCode(96 + Math.abs(term)))
+          .join(" v ") +
+        "]"
+      );
+    })
+    .join(" ^ ");
+}

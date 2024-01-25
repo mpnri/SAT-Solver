@@ -20,11 +20,15 @@ export function SAT_Solver_Validator(formulas: Formula[], answer: Formula): bool
 export function randomFormulasGenerator(
   formulasCount: number,
   variablesCount: number,
-  formulaLengthRage: [number, number] = [1, 3],
+  formulaLengthRange: [number, number] = [1, 3],
 ): Formula[] {
   const formulas = [];
-  const range = Math.min(Math.max(Math.abs(formulaLengthRage[1] - formulaLengthRage[0]), 1), 30);
-  const leastLength = Math.min(formulaLengthRage[0], 1);
+  //* min range: 1, max range: 30
+  const range = Math.min(
+    Math.max(Math.abs(formulaLengthRange[1] - formulaLengthRange[0]) + 1, 1),
+    30,
+  );
+  const leastLength = Math.min(formulaLengthRange[0], 1);
   while (formulasCount--) {
     const formulaLength = Math.floor(getRandomNumber() * range) + leastLength;
     formulas.push(
