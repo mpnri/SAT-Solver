@@ -1,4 +1,4 @@
-import { Formula } from "./types";
+import { Formula } from "../../types";
 
 export function SAT_Solver_Validator(formulas: Formula[], answer: Formula): boolean {
   const valueFunc = new Map<number, boolean>();

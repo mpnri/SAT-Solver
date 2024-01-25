@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { SAT_Solver } from "./solvers";
-import { SAT_Solver_Validator } from "./test.utils";
+import { SAT_Solver } from "../index";
+import { SAT_Solver_Validator } from "./utils";
 
 describe("Check brute_force SAT solver", () => {
   it("Should find answer", () => {
