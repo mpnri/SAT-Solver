@@ -6,15 +6,22 @@
 
 ### Setup Project
 
-On the root level:
+1- Please install `nodejs` and `yarn` first
+
+2- On the project root folder run:
 
 ```bash
 yarn install
 ```
 
-Start development mode:
+3- Start development mode:
 
 ```bash
-yarn dev:
+yarn dev
 ```
 
+### Run Automated Test
+
+```bash
+yarn test
+```
