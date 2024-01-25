@@ -20,7 +20,7 @@ yarn install
 yarn dev
 ```
 
-### Run Automated Test
+### Run Automated Tests
 
 ```bash
 yarn test
