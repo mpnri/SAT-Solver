@@ -1,8 +1,8 @@
-import { BruteForceSATSolver } from "./solvers/brute_force_solver";
-import { CubicSATSolver } from "./solvers/cubic_solver";
-import { LeanerSATSolver } from "./solvers/linear_solver";
-import { parseFormulasToTree } from "./solvers/utils";
-import { Formula, SATSolverType } from "./types";
+import { BruteForceSATSolver } from "./brute_force_solver";
+import { CubicSATSolver } from "./cubic_solver";
+import { LeanerSATSolver } from "./linear_solver";
+import { parseFormulasToTree } from "./utils";
+import { Formula, SATSolverType } from "../types";
 
 export const SAT_Solver = (
   formulas: Formula[],

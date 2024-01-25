@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SAT_Solver } from "./solver";
+import { SAT_Solver } from "./solvers";
 import { SAT_Solver_Validator } from "./test.utils";
 
 describe("Check brute_force SAT solver", () => {
@@ -37,13 +37,7 @@ describe("Check brute_force SAT solver", () => {
   });
 
   it("Should response unsatisfiable for p^(~p)", () => {
-    const formulas = [
-      [1],
-      [-1],
-      [2, -3],
-      [3, -1],
-      [-1, -2, -3],
-    ];
+    const formulas = [[1], [-1], [2, -3], [3, -1], [-1, -2, -3]];
     const result = SAT_Solver(formulas, 3, "brute_force");
     expect(result).toBe<typeof result>("unsatisfiable");
   });
