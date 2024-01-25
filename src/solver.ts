@@ -10,6 +10,10 @@ export const SAT_Solver = (
     return SATLeanerSolver(rootNode);
   }
 
+  if (solverType === "cubic") {
+    return SATCubicSolver(rootNode);
+  }
+
   return "unsatisfiable";
 };
 
@@ -39,6 +43,71 @@ function SATLeanerSolver(rootNode: Node): Formula | "unsatisfiable" | "solver_fa
   return Array.from(valFunc.entries())
     .sort((a, b) => a[0] - b[0])
     .map(([variable, value]) => variable * (value ? +1 : -1));
+}
+
+function SATCubicSolver(rootNode: Node): Formula | "unsatisfiable" | "solver_failed" {
+  const queue: { node: Node; value: boolean }[] = [{ node: rootNode, value: true }];
+  const valueFunc = new Map<number, boolean>();
+  if (BasicCubicSolver(queue, valueFunc)) {
+    return Array.from(valueFunc.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([variable, value]) => variable * (value ? +1 : -1));
+  }
+  return "unsatisfiable";
+}
+function BasicCubicSolver(
+  queue: { node: Node; value: boolean }[],
+  valueFunc: Map<number, boolean>,
+): boolean {
+  while (queue.length > 0) {
+    const { node, value: tempValue } = queue.shift();
+    if (node.type === "variable") {
+      if (valueFunc.get(node.var) && valueFunc.get(node.var) !== tempValue) {
+        console.log("variable error");
+        console.log(node.var, tempValue);
+        // console.log("valueFunc says", valueFunc.get(node.var))
+        return false;
+      }
+      valueFunc.set(node.var, tempValue);
+    } else if (node.type === "not") {
+      if (!node.child) throw Error("empty child for 'not' node");
+      queue.push({ node: node.child, value: !tempValue });
+    } else if (node.type === "and") {
+      if (!node.left || !node.right) throw Error("empty child for 'and' node");
+      if (tempValue === true) {
+        queue.push({ node: node.left, value: true }, { node: node.right, value: true });
+      } else {
+        printTree(node);
+        console.log("-----");
+        console.log("original", [...valueFunc.entries()]);
+        for (let children of [
+          { left: true, right: false },
+          { left: false, right: true },
+          { left: false, right: false },
+        ]) {
+          // const tempValueFunc = new Map(valueFunc);
+          const tempValueFunc = new Map<number, boolean>();
+          valueFunc.forEach((value, key) => tempValueFunc.set(key, value));
+
+          const tempQueue = [...queue];
+          tempQueue.push(
+            { node: node.left, value: children.left },
+            { node: node.right, value: children.right },
+          );
+          if (BasicCubicSolver(tempQueue, tempValueFunc)) {
+            tempValueFunc.forEach((value, key) => valueFunc.set(key, value));
+            console.log("ok", [...tempValueFunc.entries()]);
+            return true;
+          }
+          console.log("not ok", [...tempValueFunc.entries()]);
+        }
+        console.log("false");
+        console.log("-----");
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 /**
@@ -74,8 +143,10 @@ function parseFormulaToTree(formula: Formula): Node {
 
     if (index < transformedFormula.length - 1) {
       currentNode.left = child;
-      currentNode.right = { type: "and" };
-      currentNode = currentNode.right;
+      if (index < transformedFormula.length - 2) {
+        currentNode.right = { type: "and" };
+        currentNode = currentNode.right;
+      }
     } else {
       currentNode.right = child;
     }

@@ -15,7 +15,7 @@ for (let i = 0; i < formulasCount; i++) {
 }
 // console.log(formulas);
 
-const answer = SAT_Solver(formulas, "linear");
+const answer = SAT_Solver(formulas, "cubic");
 
 console.log(
   typeof answer === "string"
